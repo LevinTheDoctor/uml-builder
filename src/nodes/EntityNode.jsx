@@ -1,4 +1,5 @@
 import { NodeShell } from './nodeTypes.jsx'
+import { useT } from '../i18n/I18nProvider.jsx'
 
 /**
  * ERM entity. Header is the entity name; rows are attributes.
@@ -6,6 +7,7 @@ import { NodeShell } from './nodeTypes.jsx'
  * would render in italic — we just expose `pk` for now.
  */
 export function EntityNode({ data, selected }) {
+  const t = useT()
   const attrs = data.attributes || []
   return (
     <NodeShell selected={selected} style={{ minWidth: 200 }}>
@@ -18,7 +20,7 @@ export function EntityNode({ data, selected }) {
         }}
       >
         <div className="font-mono text-[10px] uppercase tracking-[0.16em] opacity-80 leading-none mb-1">
-          entity
+          {t('entity.label')}
         </div>
         <div className="font-display italic text-[18px] leading-none">
           {data.name || 'NewEntity'}
@@ -26,7 +28,7 @@ export function EntityNode({ data, selected }) {
       </div>
       <div className="font-mono text-[11px]">
         {attrs.length === 0 ? (
-          <div className="px-3 py-1.5 italic" style={{ color: 'var(--c-fg-subtle)' }}>no attributes</div>
+          <div className="px-3 py-1.5 italic" style={{ color: 'var(--c-fg-subtle)' }}>{t('entity.noAttrs')}</div>
         ) : attrs.map((a, i) => (
           <div
             key={i}

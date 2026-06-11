@@ -1,4 +1,5 @@
 import { NodeShell } from './nodeTypes.jsx'
+import { useT } from '../i18n/I18nProvider.jsx'
 
 /**
  * UML class. Three stacked compartments: header (stereotype + name),
@@ -6,6 +7,7 @@ import { NodeShell } from './nodeTypes.jsx'
  * for simple cases. Editing happens in the Inspector.
  */
 export function ClassNode({ data, selected }) {
+  const t = useT()
   const attrs   = (data.attributes || []).filter(Boolean)
   const methods = (data.methods    || []).filter(Boolean)
   return (
@@ -43,7 +45,7 @@ export function ClassNode({ data, selected }) {
 
       {attrs.length === 0 && methods.length === 0 && (
         <div className="px-3 py-1.5 font-mono text-[10px] italic" style={{ color: 'var(--c-fg-subtle)' }}>
-          empty class
+          {t('class.empty')}
         </div>
       )}
     </NodeShell>
