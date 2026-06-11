@@ -1,4 +1,5 @@
 import { Handle, Position } from '@xyflow/react'
+import { ClassNode } from './ClassNode.jsx'
 
 /**
  * Stub node renderers — proper visuals per diagram type live in their own
@@ -68,7 +69,7 @@ export function NoteNode({ data, selected }) {
 
 // Default registry — each diagram-family branch replaces its own entry.
 export const nodeTypes = {
-  class:           PlaceholderNode,
+  class:           ClassNode,
   entity:          PlaceholderNode,
   actor:           PlaceholderNode,
   usecase:         PlaceholderNode,
