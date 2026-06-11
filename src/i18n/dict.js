@@ -14,6 +14,13 @@ export const dict = {
     'topbar.export':   'XML exportieren',
     'topbar.png':      'PNG',
     'topbar.language': 'Sprache',
+    'topbar.settings': 'Einstellungen',
+
+    'settings.title':         'Einstellungen',
+    'settings.tab.language':  'Sprache',
+    'settings.tab.theme':     'Erscheinungsbild',
+    'settings.language.hint': 'wird auf der gesamten Oberfläche angewendet',
+    'settings.theme.hint':    'Basis-Theme wählen, einzelne Farben anpassen',
 
     'palette.title':     'Palette',
     'palette.subtitle':  'auf Canvas ziehen',
@@ -149,6 +156,13 @@ export const dict = {
     'topbar.export':   'Export XML',
     'topbar.png':      'PNG',
     'topbar.language': 'Language',
+    'topbar.settings': 'Settings',
+
+    'settings.title':         'Settings',
+    'settings.tab.language':  'Language',
+    'settings.tab.theme':     'Appearance',
+    'settings.language.hint': 'applies across the interface',
+    'settings.theme.hint':    'pick a base, tweak individual colors',
 
     'palette.title':     'Palette',
     'palette.subtitle':  'drag onto canvas',
