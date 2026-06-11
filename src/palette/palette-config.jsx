@@ -20,6 +20,15 @@ const GlyphEntity = SwG(<>
   <line x1="4" y1="14" x2="28" y2="14" stroke="currentColor" strokeWidth="1.2"/>
   <circle cx="8.5" cy="19" r="1.2" fill="currentColor"/>
 </>)
+const GlyphErmEntity = SwG(
+  <rect x="3" y="10" width="26" height="12" fill="none" stroke="currentColor" strokeWidth="1.4"/>
+)
+const GlyphErmRel = SwG(
+  <polygon points="16,4 28,16 16,28 4,16" fill="none" stroke="currentColor" strokeWidth="1.4"/>
+)
+const GlyphErmAttr = SwG(
+  <ellipse cx="16" cy="16" rx="12" ry="6" fill="none" stroke="currentColor" strokeWidth="1.4"/>
+)
 const GlyphActor = SwG(<>
   <circle cx="16" cy="8" r="3" fill="none" stroke="currentColor" strokeWidth="1.2"/>
   <line x1="16" y1="11" x2="16" y2="22" stroke="currentColor" strokeWidth="1.2"/>
@@ -55,6 +64,12 @@ export const PALETTE = {
     { kind: 'note',  labelKey: 'palette.note.label',  blurbKey: 'palette.note.blurb',  glyph: GlyphNote  },
   ],
   erm: [
+    { kind: 'erm-entity',       labelKey: 'palette.ermEntity.label',       blurbKey: 'palette.ermEntity.blurb',       glyph: GlyphErmEntity },
+    { kind: 'erm-relationship', labelKey: 'palette.ermRelationship.label', blurbKey: 'palette.ermRelationship.blurb', glyph: GlyphErmRel    },
+    { kind: 'erm-attribute',    labelKey: 'palette.ermAttribute.label',    blurbKey: 'palette.ermAttribute.blurb',    glyph: GlyphErmAttr   },
+    { kind: 'note',             labelKey: 'palette.note.label',            blurbKey: 'palette.note.blurb',            glyph: GlyphNote      },
+  ],
+  rdm: [
     { kind: 'entity', labelKey: 'palette.entity.label', blurbKey: 'palette.entity.blurb', glyph: GlyphEntity },
     { kind: 'note',   labelKey: 'palette.note.label',   blurbKey: 'palette.note.blurb',   glyph: GlyphNote   },
   ],

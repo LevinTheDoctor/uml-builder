@@ -1,6 +1,7 @@
 import { Handle, Position } from '@xyflow/react'
 import { ClassNode } from './ClassNode.jsx'
 import { EntityNode } from './EntityNode.jsx'
+import { ErmEntityNode, ErmRelationshipNode, ErmAttributeNode } from './ErmNodes.jsx'
 import {
   ActorNode, UseCaseNode, LifelineNode, SwimlaneNode,
   EpkEventNode, EpkFunctionNode, EpkConnectorNode,
@@ -74,14 +75,17 @@ export function NoteNode({ data, selected }) {
 
 // Default registry — each diagram-family branch replaces its own entry.
 export const nodeTypes = {
-  class:           ClassNode,
-  entity:          EntityNode,
-  actor:           ActorNode,
-  usecase:         UseCaseNode,
-  lifeline:        LifelineNode,
-  swimlane:        SwimlaneNode,
-  'epk-event':     EpkEventNode,
-  'epk-function':  EpkFunctionNode,
-  'epk-connector': EpkConnectorNode,
-  note:            NoteNode,
+  class:              ClassNode,
+  entity:             EntityNode,
+  'erm-entity':       ErmEntityNode,
+  'erm-relationship': ErmRelationshipNode,
+  'erm-attribute':    ErmAttributeNode,
+  actor:              ActorNode,
+  usecase:            UseCaseNode,
+  lifeline:           LifelineNode,
+  swimlane:           SwimlaneNode,
+  'epk-event':        EpkEventNode,
+  'epk-function':     EpkFunctionNode,
+  'epk-connector':    EpkConnectorNode,
+  note:               NoteNode,
 }
