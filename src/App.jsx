@@ -3,20 +3,29 @@ import { Palette } from './palette/Palette.jsx'
 import { Canvas } from './components/Canvas.jsx'
 import { Inspector } from './components/Inspector.jsx'
 import { useStore } from './state/store.js'
-import { downloadXml, pickAndParseXml } from './export/xml.js'
+import { toXml, fromXml } from './export/xml.js'
 import { exportPng } from './export/png.js'
+import { saveXmlToFile, openXmlFromFile } from './platform/storage.js'
 
 export default function App() {
   const loadAll = useStore((s) => s.loadAll)
 
-  function onExportXml() {
+  async function onExportXml() {
     const { diagrams, diagramType } = useStore.getState()
-    downloadXml({ diagrams, diagramType }, `diagrammwerk-${diagramType}.xml`)
+    const xml = toXml({ diagrams, diagramType })
+    try {
+      await saveXmlToFile(xml, `diagrammwerk-${diagramType}.xml`)
+    } catch (err) {
+      console.error(err)
+      alert('Could not save XML: ' + err.message)
+    }
   }
 
   async function onImportXml() {
     try {
-      const { diagrams, activeType } = await pickAndParseXml()
+      const result = await openXmlFromFile()
+      if (!result) return
+      const { diagrams, activeType } = fromXml(result.content)
       loadAll(diagrams, activeType)
     } catch (err) {
       console.error(err)
