@@ -1,111 +1,176 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+@import "tailwindcss";
+@import "@xyflow/react/dist/style.css";
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+/* ---------------------------------------------------------------------------
+   Diagrammwerk — design tokens
+   Every theme is a flat set of CSS variables. Switching themes = swap one
+   data-theme on <html>. Custom colors get layered on top via inline style.
+   --------------------------------------------------------------------------- */
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --c-bg:           #f6f4ee;
+  --c-bg-elev:      #ffffff;
+  --c-bg-canvas:    #f1ede2;
+  --c-fg:           #1a1814;
+  --c-fg-muted:     #6b6558;
+  --c-fg-subtle:    #a39d8d;
+  --c-border:       #d9d3c2;
+  --c-border-strong:#a39d8d;
+  --c-accent:       #c5443a;
+  --c-accent-fg:    #ffffff;
+  --c-node-bg:      #ffffff;
+  --c-node-border:  #1a1814;
+  --c-node-head:    #1a1814;
+  --c-node-head-fg: #f6f4ee;
+  --c-edge:         #1a1814;
+  --c-selection:    rgba(197, 68, 58, 0.18);
+  --c-grid:         #d6cfbf;
+  --c-shadow:       0 1px 0 rgba(26, 24, 20, 0.04), 0 8px 24px -12px rgba(26, 24, 20, 0.12);
+}
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
+[data-theme="dark"] {
+  color-scheme: dark;
+  --c-bg:           #0d0e10;
+  --c-bg-elev:      #15171b;
+  --c-bg-canvas:    #0a0b0d;
+  --c-fg:           #ece9e2;
+  --c-fg-muted:     #8b8a85;
+  --c-fg-subtle:    #4d4c48;
+  --c-border:       #25272d;
+  --c-border-strong:#3a3d44;
+  --c-accent:       #e8b059;
+  --c-accent-fg:    #15171b;
+  --c-node-bg:      #15171b;
+  --c-node-border:  #3a3d44;
+  --c-node-head:    #ece9e2;
+  --c-node-head-fg: #0d0e10;
+  --c-edge:         #ece9e2;
+  --c-selection:    rgba(232, 176, 89, 0.22);
+  --c-grid:         #1c1e23;
+  --c-shadow:       0 1px 0 rgba(0, 0, 0, 0.6), 0 8px 24px -8px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dracula"] {
+  color-scheme: dark;
+  --c-bg:           #282a36;
+  --c-bg-elev:      #343746;
+  --c-bg-canvas:    #1e1f29;
+  --c-fg:           #f8f8f2;
+  --c-fg-muted:     #bdbdcb;
+  --c-fg-subtle:    #6272a4;
+  --c-border:       #44475a;
+  --c-border-strong:#6272a4;
+  --c-accent:       #ff79c6;
+  --c-accent-fg:    #282a36;
+  --c-node-bg:      #44475a;
+  --c-node-border:  #bd93f9;
+  --c-node-head:    #bd93f9;
+  --c-node-head-fg: #282a36;
+  --c-edge:         #f8f8f2;
+  --c-selection:    rgba(255, 121, 198, 0.25);
+  --c-grid:         #343746;
+  --c-shadow:       0 1px 0 rgba(0, 0, 0, 0.4), 0 12px 28px -10px rgba(189, 147, 249, 0.25);
+}
+
+/* Tell simple-tailwind-ui to use its dark variant on non-light themes */
+[data-theme="dark"],
+[data-theme="dracula"] {
+  /* simple-tailwind-ui keys off the `dark` class */
+}
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+    background: var(--c-bg);
+    color: var(--c-fg);
   }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  body {
+    font-family: "Geist", ui-sans-serif, system-ui, sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+  .font-display { font-family: "Instrument Serif", "Iowan Old Style", Georgia, serif; font-weight: 400; }
+  .font-mono    { font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; }
+  ::selection   { background: var(--c-selection); color: var(--c-fg); }
 }
 
-body {
-  margin: 0;
+/* ----- React Flow themed overrides ----------------------------------------- */
+.react-flow {
+  background: var(--c-bg-canvas);
+  --xy-background-color: var(--c-bg-canvas);
+  --xy-edge-stroke: var(--c-edge);
+  --xy-edge-stroke-selected: var(--c-accent);
+  --xy-node-color: var(--c-fg);
+  --xy-handle-background-color: var(--c-accent);
+  --xy-handle-border-color: var(--c-bg-elev);
+  --xy-attribution-background-color: transparent;
+  --xy-selection-background-color: var(--c-selection);
+  --xy-selection-border: 1px dashed var(--c-accent);
+  --xy-controls-button-background-color: var(--c-bg-elev);
+  --xy-controls-button-background-color-hover: var(--c-bg);
+  --xy-controls-button-color: var(--c-fg);
+  --xy-controls-button-border-color: var(--c-border);
+  --xy-minimap-background-color: var(--c-bg-elev);
+  --xy-minimap-mask-background-color: color-mix(in srgb, var(--c-bg) 70%, transparent);
 }
+.react-flow__attribution { display: none; }
+.react-flow__handle {
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  border: 1.5px solid var(--c-bg-elev);
+  background: var(--c-accent);
+}
+.react-flow__edge-path { stroke-width: 1.5; }
+.react-flow__edge.selected .react-flow__edge-path { stroke-width: 2; }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
+/* Crosshatch grid background used by Background component */
+.dw-grid-pattern circle { fill: var(--c-grid); }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+/* ----- Reusable chrome utilities ------------------------------------------- */
+.dw-panel {
+  background: var(--c-bg-elev);
+  border: 1px solid var(--c-border);
+  box-shadow: var(--c-shadow);
 }
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
+.dw-divider {
+  background: var(--c-border);
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
+.dw-input {
+  background: transparent;
+  border: 1px solid var(--c-border);
+  color: var(--c-fg);
   padding: 4px 8px;
-  background: var(--code-bg);
+  border-radius: 4px;
+  font-size: 12px;
+  outline: none;
+}
+.dw-input:focus { border-color: var(--c-accent); }
+.dw-btn {
+  border: 1px solid var(--c-border);
+  background: var(--c-bg-elev);
+  color: var(--c-fg);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color .15s ease, background .15s ease, transform .05s ease;
+}
+.dw-btn:hover  { border-color: var(--c-border-strong); }
+.dw-btn:active { transform: translateY(1px); }
+.dw-btn-accent {
+  background: var(--c-accent);
+  color: var(--c-accent-fg);
+  border-color: var(--c-accent);
+}
+.dw-btn-accent:hover { filter: brightness(0.95); }
+
+/* Hairline accent indicator used on active palette/tab items */
+.dw-rule-accent::before {
+  content: "";
+  position: absolute; left: 0; top: 8px; bottom: 8px;
+  width: 2px; background: var(--c-accent); border-radius: 1px;
 }
