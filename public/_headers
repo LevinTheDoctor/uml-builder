@@ -1,0 +1,7 @@
+# Cloudflare Pages: long-cache the fingerprinted bundles, short-cache the shell.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin

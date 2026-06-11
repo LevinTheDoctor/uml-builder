@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
-    "tauri:build": "tauri build"
+    "tauri:build": "tauri build",
+    "tauri:icon": "tauri icon ./src-tauri/app-icon.svg",
+    "deploy:cloudflare": "wrangler pages deploy dist --project-name=diagrammwerk"
   },
   "dependencies": {
     "@levin-the-doctor/simple-tailwind-ui": "^1.6.0",
