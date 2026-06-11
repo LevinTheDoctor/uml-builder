@@ -4,6 +4,7 @@ import { Canvas } from './components/Canvas.jsx'
 import { Inspector } from './components/Inspector.jsx'
 import { useStore } from './state/store.js'
 import { downloadXml, pickAndParseXml } from './export/xml.js'
+import { exportPng } from './export/png.js'
 
 export default function App() {
   const loadAll = useStore((s) => s.loadAll)
@@ -23,8 +24,15 @@ export default function App() {
     }
   }
 
-  function onExportPng() {
-    alert('PNG export — wired up on its own branch')
+  async function onExportPng() {
+    const { diagrams, diagramType } = useStore.getState()
+    const { nodes } = diagrams[diagramType]
+    try {
+      await exportPng({ nodes, filename: `diagrammwerk-${diagramType}.png` })
+    } catch (err) {
+      console.error(err)
+      alert('Could not export PNG: ' + err.message)
+    }
   }
 
   return (
