@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Rounded squircle backdrop in Diagrammwerk's paper tone -->
+  <rect width="1024" height="1024" rx="232" ry="232" fill="#1a1814"/>
+
+  <!-- Three primitives stacked off-center to hint at entity / relationship / attribute -->
+  <g transform="translate(176 252)" fill="none" stroke="#f6f4ee" stroke-width="22">
+    <rect x="0" y="0" width="280" height="180" rx="6"/>
+    <polygon points="500 90 670 220 500 350 330 220"/>
+    <ellipse cx="552" cy="470" rx="120" ry="60"/>
+  </g>
+
+  <!-- Accent serif italic "D" overlay, brand mark -->
+  <text x="512" y="780"
+        text-anchor="middle"
+        font-family="Instrument Serif, Georgia, serif"
+        font-style="italic"
+        font-size="320"
+        fill="#c5443a">D</text>
+</svg>
