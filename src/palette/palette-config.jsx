@@ -1,9 +1,9 @@
 /**
  * What appears in the left palette per diagram type.
  *
- * Each entry: { kind, label, blurb, glyph }
- *   - `kind` matches a React Flow nodeTypes key
- *   - `glyph` is a small inline SVG that hints at the visual on the canvas
+ * Entries carry i18n keys (`labelKey`, `blurbKey`) rather than strings —
+ * Palette.jsx resolves them via `useT()` at render time so the palette
+ * updates when the user switches language.
  */
 
 const SwG = (children) => (props) => (
@@ -51,31 +51,31 @@ const GlyphNote = SwG(<>
 
 export const PALETTE = {
   class: [
-    { kind: 'class', label: 'Class',     blurb: 'Attributes + methods',     glyph: GlyphClass },
-    { kind: 'note',  label: 'Note',      blurb: 'Free-text annotation',     glyph: GlyphNote },
+    { kind: 'class', labelKey: 'palette.class.label', blurbKey: 'palette.class.blurb', glyph: GlyphClass },
+    { kind: 'note',  labelKey: 'palette.note.label',  blurbKey: 'palette.note.blurb',  glyph: GlyphNote  },
   ],
   erm: [
-    { kind: 'entity', label: 'Entity',   blurb: 'Table with attributes',    glyph: GlyphEntity },
-    { kind: 'note',   label: 'Note',     blurb: 'Free-text annotation',     glyph: GlyphNote },
+    { kind: 'entity', labelKey: 'palette.entity.label', blurbKey: 'palette.entity.blurb', glyph: GlyphEntity },
+    { kind: 'note',   labelKey: 'palette.note.label',   blurbKey: 'palette.note.blurb',   glyph: GlyphNote   },
   ],
   usecase: [
-    { kind: 'actor',   label: 'Actor',   blurb: 'External role',            glyph: GlyphActor },
-    { kind: 'usecase', label: 'Use Case',blurb: 'Capability ellipse',       glyph: GlyphUseCase },
-    { kind: 'note',    label: 'Note',    blurb: 'Free-text annotation',     glyph: GlyphNote },
+    { kind: 'actor',   labelKey: 'palette.actor.label',   blurbKey: 'palette.actor.blurb',   glyph: GlyphActor   },
+    { kind: 'usecase', labelKey: 'palette.usecase.label', blurbKey: 'palette.usecase.blurb', glyph: GlyphUseCase },
+    { kind: 'note',    labelKey: 'palette.note.label',    blurbKey: 'palette.note.blurb',    glyph: GlyphNote    },
   ],
   sequence: [
-    { kind: 'lifeline', label: 'Lifeline', blurb: 'Object on the timeline', glyph: GlyphLifeline },
-    { kind: 'note',     label: 'Note',     blurb: 'Free-text annotation',   glyph: GlyphNote },
+    { kind: 'lifeline', labelKey: 'palette.lifeline.label', blurbKey: 'palette.lifeline.blurb', glyph: GlyphLifeline },
+    { kind: 'note',     labelKey: 'palette.note.label',     blurbKey: 'palette.note.blurb',     glyph: GlyphNote     },
   ],
   swimlane: [
-    { kind: 'swimlane', label: 'Lane',  blurb: 'Horizontal lane',           glyph: GlyphSwimlane },
-    { kind: 'epk-function', label: 'Task', blurb: 'A task inside a lane',   glyph: GlyphEpkFunction },
-    { kind: 'note',     label: 'Note',  blurb: 'Free-text annotation',      glyph: GlyphNote },
+    { kind: 'swimlane',     labelKey: 'palette.swimlane.label', blurbKey: 'palette.swimlane.blurb', glyph: GlyphSwimlane    },
+    { kind: 'epk-function', labelKey: 'palette.task.label',     blurbKey: 'palette.task.blurb',     glyph: GlyphEpkFunction },
+    { kind: 'note',         labelKey: 'palette.note.label',     blurbKey: 'palette.note.blurb',     glyph: GlyphNote        },
   ],
   epk: [
-    { kind: 'epk-event',     label: 'Event',     blurb: 'Hexagon',          glyph: GlyphEpkEvent },
-    { kind: 'epk-function',  label: 'Function',  blurb: 'Rounded rectangle',glyph: GlyphEpkFunction },
-    { kind: 'epk-connector', label: 'Connector', blurb: 'XOR / AND / OR',   glyph: GlyphEpkConnector },
-    { kind: 'note',          label: 'Note',      blurb: 'Free-text',        glyph: GlyphNote },
+    { kind: 'epk-event',     labelKey: 'palette.epkEvent.label',     blurbKey: 'palette.epkEvent.blurb',     glyph: GlyphEpkEvent     },
+    { kind: 'epk-function',  labelKey: 'palette.epkFunction.label',  blurbKey: 'palette.epkFunction.blurb',  glyph: GlyphEpkFunction  },
+    { kind: 'epk-connector', labelKey: 'palette.epkConnector.label', blurbKey: 'palette.epkConnector.blurb', glyph: GlyphEpkConnector },
+    { kind: 'note',          labelKey: 'palette.note.label',         blurbKey: 'palette.note.blurb',         glyph: GlyphNote         },
   ],
 }

@@ -1,11 +1,13 @@
 import { useStore } from '../state/store.js'
 import { PALETTE } from './palette-config.jsx'
+import { useT } from '../i18n/I18nProvider.jsx'
 
 /**
  * Left sidebar. Items are drag sources; the Canvas wires up the drop side.
  * The active list is filtered by the currently selected diagram type.
  */
 export function Palette() {
+  const t = useT()
   const diagramType = useStore((s) => s.diagramType)
   const items = PALETTE[diagramType] || []
 
@@ -21,10 +23,10 @@ export function Palette() {
     >
       <div className="px-4 py-3" style={{ borderBottom: '1px solid var(--c-border)' }}>
         <div className="font-display italic text-lg leading-none" style={{ color: 'var(--c-fg)' }}>
-          Palette
+          {t('palette.title')}
         </div>
         <div className="font-mono text-[10px] uppercase tracking-[0.18em] mt-1" style={{ color: 'var(--c-fg-subtle)' }}>
-          drag onto canvas
+          {t('palette.subtitle')}
         </div>
       </div>
       <div className="flex-1 overflow-y-auto p-2 flex flex-col gap-1.5">
@@ -32,7 +34,7 @@ export function Palette() {
           const Glyph = it.glyph
           return (
             <div
-              key={it.kind}
+              key={`${diagramType}-${it.kind}`}
               draggable
               onDragStart={(e) => onDragStart(e, it.kind)}
               className="group relative flex items-start gap-3 p-3 rounded-md cursor-grab active:cursor-grabbing select-none transition"
@@ -42,15 +44,15 @@ export function Palette() {
                 <Glyph />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-[13px] leading-tight" style={{ color: 'var(--c-fg)' }}>{it.label}</div>
-                <div className="text-[11px] mt-0.5 truncate" style={{ color: 'var(--c-fg-subtle)' }}>{it.blurb}</div>
+                <div className="text-[13px] leading-tight" style={{ color: 'var(--c-fg)' }}>{t(it.labelKey)}</div>
+                <div className="text-[11px] mt-0.5 truncate" style={{ color: 'var(--c-fg-subtle)' }}>{t(it.blurbKey)}</div>
               </div>
             </div>
           )
         })}
       </div>
       <div className="px-4 py-2 font-mono text-[10px]" style={{ borderTop: '1px solid var(--c-border)', color: 'var(--c-fg-subtle)' }}>
-        ⌥ drag to duplicate · Del to remove
+        {t('palette.footer')}
       </div>
     </aside>
   )

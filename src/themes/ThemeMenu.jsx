@@ -2,19 +2,16 @@ import { useEffect, useRef, useState } from 'react'
 import { Palette, RotateCcw, Sun, Moon, Sparkles, X } from 'lucide-react'
 import { useTheme } from './ThemeProvider.jsx'
 import { BASE_THEMES, TOKEN_DEFS, resolveToken } from './themes.js'
+import { useT } from '../i18n/I18nProvider.jsx'
 
 const BASE_META = {
-  light:   { icon: Sun,      label: 'Light',   note: 'paper & ink' },
-  dark:    { icon: Moon,     label: 'Dark',    note: 'low-light studio' },
-  dracula: { icon: Sparkles, label: 'Dracula', note: 'iconic neon' },
+  light:   { icon: Sun,      labelKey: 'theme.base.light',   noteKey: 'theme.base.light.note' },
+  dark:    { icon: Moon,     labelKey: 'theme.base.dark',    noteKey: 'theme.base.dark.note' },
+  dracula: { icon: Sparkles, labelKey: 'theme.base.dracula', noteKey: 'theme.base.dracula.note' },
 }
 
-/**
- * Floating theme menu. Opens from the topbar; lets the user pick a base theme
- * and override any of the ~16 design tokens. Overrides persist per token so
- * switching base preserves customizations the user already cares about.
- */
 export function ThemeMenu() {
+  const t = useT()
   const [open, setOpen] = useState(false)
   const { base, overrides, setBase, setOverride, resetOverrides } = useTheme()
   const popRef = useRef(null)
@@ -46,10 +43,10 @@ export function ThemeMenu() {
           <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid var(--c-border)' }}>
             <div>
               <div className="font-display text-xl italic leading-none" style={{ color: 'var(--c-fg)' }}>
-                Theme
+                {t('theme.title')}
               </div>
               <div className="font-mono text-[10px] uppercase tracking-[0.18em] mt-1" style={{ color: 'var(--c-fg-subtle)' }}>
-                base · custom tokens
+                {t('theme.subtitle')}
               </div>
             </div>
             <button onClick={() => setOpen(false)} className="dw-btn !p-1.5" aria-label="Close">
@@ -58,14 +55,14 @@ export function ThemeMenu() {
           </div>
 
           <div className="px-4 py-3 grid grid-cols-3 gap-2">
-            {BASE_THEMES.map((t) => {
-              const Meta = BASE_META[t]
+            {BASE_THEMES.map((bid) => {
+              const Meta = BASE_META[bid]
               const Icon = Meta.icon
-              const active = base === t
+              const active = base === bid
               return (
                 <button
-                  key={t}
-                  onClick={() => setBase(t)}
+                  key={bid}
+                  onClick={() => setBase(bid)}
                   className="relative text-left px-3 py-2.5 rounded-md transition"
                   style={{
                     border: `1px solid ${active ? 'var(--c-accent)' : 'var(--c-border)'}`,
@@ -73,9 +70,9 @@ export function ThemeMenu() {
                   }}
                 >
                   <Icon size={14} style={{ color: active ? 'var(--c-accent)' : 'var(--c-fg-muted)' }} />
-                  <div className="mt-2 font-display text-base italic leading-none">{Meta.label}</div>
+                  <div className="mt-2 font-display text-base italic leading-none">{t(Meta.labelKey)}</div>
                   <div className="font-mono text-[10px] uppercase tracking-wider mt-1" style={{ color: 'var(--c-fg-subtle)' }}>
-                    {Meta.note}
+                    {t(Meta.noteKey)}
                   </div>
                 </button>
               )
@@ -84,24 +81,31 @@ export function ThemeMenu() {
 
           <div className="px-4 pb-1 flex items-center justify-between">
             <div className="font-mono text-[10px] uppercase tracking-[0.18em]" style={{ color: 'var(--c-fg-subtle)' }}>
-              Custom tokens
+              {t('theme.customTokens')}
             </div>
             {Object.keys(overrides).length > 0 && (
               <button onClick={resetOverrides} className="dw-btn flex items-center gap-1 !text-[10px] !py-1">
                 <RotateCcw size={11} />
-                Reset
+                {t('theme.reset')}
               </button>
             )}
           </div>
 
           <div className="max-h-[300px] overflow-y-auto px-2 py-2">
-            {TOKEN_DEFS.map((t) => (
-              <TokenRow key={t.key} tokenKey={t.key} label={t.label} value={overrides[t.key]} onChange={(v) => setOverride(t.key, v)} />
+            {TOKEN_DEFS.map((tok) => (
+              <TokenRow
+                key={tok.key}
+                tokenKey={tok.key}
+                label={t(`token.${tok.key}`)}
+                value={overrides[tok.key]}
+                onChange={(v) => setOverride(tok.key, v)}
+                t={t}
+              />
             ))}
           </div>
 
           <div className="px-4 py-2 font-mono text-[10px]" style={{ borderTop: '1px solid var(--c-border)', color: 'var(--c-fg-subtle)' }}>
-            Tip: customizations stack on top of the base theme.
+            {t('theme.tip')}
           </div>
         </div>
       )}
@@ -109,9 +113,7 @@ export function ThemeMenu() {
   )
 }
 
-function TokenRow({ tokenKey, label, value, onChange }) {
-  // When no override is set, surface the resolved theme value so the picker
-  // starts where the user actually sees the color today.
+function TokenRow({ tokenKey, label, value, onChange, t }) {
   const [live, setLive] = useState('#000000')
   useEffect(() => { setLive(value || resolveToken(tokenKey) || '#000000') }, [tokenKey, value])
 
@@ -133,7 +135,7 @@ function TokenRow({ tokenKey, label, value, onChange }) {
         onChange={(e) => onChange(e.target.value)}
         className="w-6 h-6 cursor-pointer rounded-md overflow-hidden border-none bg-transparent"
         style={{ padding: 0 }}
-        aria-label={`Pick ${label}`}
+        aria-label={t('theme.token.pick', { label })}
       />
       {value && (
         <button
@@ -141,7 +143,7 @@ function TokenRow({ tokenKey, label, value, onChange }) {
           onClick={(e) => { e.preventDefault(); onChange(null) }}
           className="font-mono text-[10px] uppercase"
           style={{ color: 'var(--c-fg-subtle)' }}
-          title="Clear override"
+          title={t('theme.token.clear')}
         >
           ×
         </button>
@@ -150,7 +152,6 @@ function TokenRow({ tokenKey, label, value, onChange }) {
   )
 }
 
-/** Native <input type="color"> requires "#rrggbb". Coerce best-effort. */
 function normalizeHex(c) {
   if (!c) return '#000000'
   const trimmed = String(c).trim()
@@ -158,7 +159,6 @@ function normalizeHex(c) {
   if (/^#[0-9a-f]{3}$/i.test(trimmed)) {
     return '#' + trimmed.slice(1).split('').map((d) => d + d).join('')
   }
-  // For rgb(...)/color-mix() etc, render via a temp element to read computed color
   try {
     const probe = document.createElement('span')
     probe.style.color = trimmed

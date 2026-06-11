@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react'
+import { tStandalone as t } from '../i18n/I18nProvider.jsx'
 
 /**
  * Diagrammwerk model.
@@ -7,15 +8,18 @@ import { applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react'
  * We keep ONE working document keyed by diagram type so users can switch
  * between (say) the class view and an ERM view without losing work. XML
  * export/import operates on the currently active diagram.
+ *
+ * DIAGRAM_TYPES carries i18n keys, not strings — UI components resolve
+ * them via useT() at render time so language switches re-render labels.
  */
 
 export const DIAGRAM_TYPES = [
-  { id: 'class',    label: 'UML Class',     hint: 'classes, inheritance, associations' },
-  { id: 'erm',      label: 'ERM',           hint: 'entities, attributes, relations' },
-  { id: 'usecase',  label: 'UML Use Case',  hint: 'actors, use cases, system boundary' },
-  { id: 'sequence', label: 'UML Sequence',  hint: 'lifelines, messages' },
-  { id: 'swimlane', label: 'Swimlanes',     hint: 'lanes, tasks' },
-  { id: 'epk',      label: 'EPK',           hint: 'events, functions, connectors' },
+  { id: 'class',    labelKey: 'diagram.class',    hintKey: 'diagram.class.hint' },
+  { id: 'erm',      labelKey: 'diagram.erm',      hintKey: 'diagram.erm.hint' },
+  { id: 'usecase',  labelKey: 'diagram.usecase',  hintKey: 'diagram.usecase.hint' },
+  { id: 'sequence', labelKey: 'diagram.sequence', hintKey: 'diagram.sequence.hint' },
+  { id: 'swimlane', labelKey: 'diagram.swimlane', hintKey: 'diagram.swimlane.hint' },
+  { id: 'epk',      labelKey: 'diagram.epk',      hintKey: 'diagram.epk.hint' },
 ]
 
 const emptyDoc = () => ({ nodes: [], edges: [] })
@@ -144,25 +148,25 @@ export const useStore = create((set, get) => ({
 function defaultNodeData(kind) {
   switch (kind) {
     case 'class':
-      return { name: 'NewClass', stereotype: '', attributes: ['- attr: Type'], methods: ['+ method(): void'] }
+      return { name: t('default.class'), stereotype: '', attributes: ['- attr: Type'], methods: ['+ method(): void'] }
     case 'entity':
-      return { name: 'NewEntity', attributes: [{ name: 'id', type: 'INT', pk: true }] }
+      return { name: t('default.entity'), attributes: [{ name: 'id', type: 'INT', pk: true }] }
     case 'actor':
-      return { name: 'Actor' }
+      return { name: t('default.actor') }
     case 'usecase':
-      return { name: 'Use Case' }
+      return { name: t('default.usecase') }
     case 'lifeline':
-      return { name: 'Lifeline' }
+      return { name: t('default.lifeline') }
     case 'swimlane':
-      return { name: 'Lane', orientation: 'horizontal' }
+      return { name: t('default.lane'), orientation: 'horizontal' }
     case 'epk-event':
-      return { name: 'Event occurred' }
+      return { name: t('default.event') }
     case 'epk-function':
-      return { name: 'Function' }
+      return { name: t('default.function') }
     case 'epk-connector':
       return { name: 'XOR', kind: 'xor' }
     case 'note':
-      return { text: 'Note' }
+      return { text: t('default.note') }
     default:
       return {}
   }

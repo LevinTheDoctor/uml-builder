@@ -1,11 +1,13 @@
 import { useStore } from '../state/store.js'
+import { useT } from '../i18n/I18nProvider.jsx'
 
 /**
- * Right sidebar. Renders an editor for whatever node is currently selected.
- * Stays intentionally generic — diagram-specific inspectors live alongside
- * their node components.
+ * Right sidebar. Renders an editor for whatever node/edge is currently
+ * selected. Stays intentionally generic — diagram-specific inspectors
+ * live alongside their node components.
  */
 export function Inspector() {
+  const t = useT()
   const selectedId = useStore((s) => s.selectedId)
   const diagramType = useStore((s) => s.diagramType)
   const node = useStore((s) =>
@@ -24,23 +26,23 @@ export function Inspector() {
     >
       <div className="px-4 py-3" style={{ borderBottom: '1px solid var(--c-border)' }}>
         <div className="font-display italic text-lg leading-none" style={{ color: 'var(--c-fg)' }}>
-          Inspector
+          {t('inspector.title')}
         </div>
         <div className="font-mono text-[10px] uppercase tracking-[0.18em] mt-1" style={{ color: 'var(--c-fg-subtle)' }}>
-          {node ? node.type : edge ? edge.type : 'no selection'}
+          {node ? node.type : edge ? edge.type : t('inspector.noSelectionAria')}
         </div>
       </div>
       <div className="flex-1 overflow-y-auto p-4">
         {!node && !edge && (
           <div className="text-sm" style={{ color: 'var(--c-fg-muted)' }}>
-            Select a node or edge to edit its properties. Drag from the palette to add new elements.
+            {t('inspector.noSelection')}
             <div className="mt-4 font-mono text-[11px]" style={{ color: 'var(--c-fg-subtle)' }}>
-              diagram: {diagramType}
+              {t('inspector.diagram')}: {diagramType}
             </div>
           </div>
         )}
-        {node && <NodeEditor node={node} update={(p) => updateNodeData(node.id, p)} />}
-        {edge && <EdgeEditor edge={edge} update={(p) => updateEdgeData(edge.id, p)} />}
+        {node && <NodeEditor node={node} update={(p) => updateNodeData(node.id, p)} t={t} />}
+        {edge && <EdgeEditor edge={edge} update={(p) => updateEdgeData(edge.id, p)} t={t} />}
       </div>
     </aside>
   )
@@ -57,31 +59,30 @@ function Field({ label, children }) {
   )
 }
 
-function NodeEditor({ node, update }) {
+function NodeEditor({ node, update, t }) {
   const { data, type } = node
   const isList = (k) => Array.isArray(data[k])
 
-  // Generic editor — every node has `name` or `text`; arrays become textareas.
   return (
     <div>
       {data.name != null && (
-        <Field label="Name">
+        <Field label={t('inspector.name')}>
           <input className="dw-input w-full" value={data.name} onChange={(e) => update({ name: e.target.value })} />
         </Field>
       )}
       {data.text != null && (
-        <Field label="Text">
+        <Field label={t('inspector.text')}>
           <textarea className="dw-input w-full min-h-[80px]" value={data.text} onChange={(e) => update({ text: e.target.value })} />
         </Field>
       )}
       {data.stereotype != null && (
-        <Field label="Stereotype">
+        <Field label={t('inspector.stereotype')}>
           <input className="dw-input w-full" placeholder="«interface»" value={data.stereotype}
                  onChange={(e) => update({ stereotype: e.target.value })} />
         </Field>
       )}
       {isList('attributes') && type === 'class' && (
-        <Field label="Attributes">
+        <Field label={t('inspector.attributes')}>
           <textarea
             className="dw-input w-full min-h-[90px] font-mono"
             value={data.attributes.join('\n')}
@@ -91,7 +92,7 @@ function NodeEditor({ node, update }) {
         </Field>
       )}
       {isList('methods') && (
-        <Field label="Methods">
+        <Field label={t('inspector.methods')}>
           <textarea
             className="dw-input w-full min-h-[90px] font-mono"
             value={data.methods.join('\n')}
@@ -101,7 +102,7 @@ function NodeEditor({ node, update }) {
         </Field>
       )}
       {type === 'entity' && isList('attributes') && (
-        <Field label="Attributes (name : type, PK with *)">
+        <Field label={t('inspector.attributesRdm')}>
           <textarea
             className="dw-input w-full min-h-[100px] font-mono"
             value={(data.attributes || []).map((a) => `${a.pk ? '*' : ''}${a.name} : ${a.type || ''}`).join('\n')}
@@ -117,7 +118,7 @@ function NodeEditor({ node, update }) {
         </Field>
       )}
       {data.kind != null && type === 'epk-connector' && (
-        <Field label="Connector kind">
+        <Field label={t('inspector.connectorKind')}>
           <select className="dw-input w-full" value={data.kind} onChange={(e) => update({ kind: e.target.value, name: e.target.value.toUpperCase() })}>
             <option value="xor">XOR</option>
             <option value="and">AND</option>
@@ -131,27 +132,27 @@ function NodeEditor({ node, update }) {
 
 const EDGE_KINDS = [
   'association', 'directed', 'inheritance', 'realization', 'dependency',
-  'aggregation', 'composition', 'message', 'asyncMessage', 'relation', 'flow',
+  'aggregation', 'composition', 'message', 'asyncMessage', 'relation', 'flow', 'plain',
 ]
 
-function EdgeEditor({ edge, update }) {
+function EdgeEditor({ edge, update, t }) {
   const { data } = edge
   return (
     <div>
-      <Field label="Kind">
+      <Field label={t('inspector.edgeKind')}>
         <select className="dw-input w-full" value={data?.kind || 'association'} onChange={(e) => update({ kind: e.target.value })}>
           {EDGE_KINDS.map((k) => <option key={k} value={k}>{k}</option>)}
         </select>
       </Field>
-      <Field label="Label">
+      <Field label={t('inspector.edgeLabel')}>
         <input className="dw-input w-full" value={data?.label || ''} onChange={(e) => update({ label: e.target.value })} />
       </Field>
       {('sourceCard' in (data || {}) || data?.kind === 'relation') && (
         <>
-          <Field label="Source cardinality">
+          <Field label={t('inspector.sourceCard')}>
             <input className="dw-input w-full" value={data?.sourceCard || ''} onChange={(e) => update({ sourceCard: e.target.value })} placeholder="1 / 0..1 / N" />
           </Field>
-          <Field label="Target cardinality">
+          <Field label={t('inspector.targetCard')}>
             <input className="dw-input w-full" value={data?.targetCard || ''} onChange={(e) => update({ targetCard: e.target.value })} placeholder="N / 0..*" />
           </Field>
         </>

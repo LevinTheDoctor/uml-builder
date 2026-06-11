@@ -6,8 +6,10 @@ import { useStore } from './state/store.js'
 import { toXml, fromXml } from './export/xml.js'
 import { exportPng } from './export/png.js'
 import { saveXmlToFile, openXmlFromFile } from './platform/storage.js'
+import { useT } from './i18n/I18nProvider.jsx'
 
 export default function App() {
+  const t = useT()
   const loadAll = useStore((s) => s.loadAll)
 
   async function onExportXml() {
@@ -17,7 +19,7 @@ export default function App() {
       await saveXmlToFile(xml, `diagrammwerk-${diagramType}.xml`)
     } catch (err) {
       console.error(err)
-      alert('Could not save XML: ' + err.message)
+      alert(`${t('error.save')} ${err.message}`)
     }
   }
 
@@ -29,7 +31,7 @@ export default function App() {
       loadAll(diagrams, activeType)
     } catch (err) {
       console.error(err)
-      alert('Could not import XML: ' + err.message)
+      alert(`${t('error.import')} ${err.message}`)
     }
   }
 
@@ -40,7 +42,7 @@ export default function App() {
       await exportPng({ nodes, filename: `diagrammwerk-${diagramType}.png` })
     } catch (err) {
       console.error(err)
-      alert('Could not export PNG: ' + err.message)
+      alert(`${t('error.png')} ${err.message}`)
     }
   }
 
