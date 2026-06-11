@@ -1,13 +1,14 @@
-import { Image as ImageIcon, Upload, FileCode2 } from 'lucide-react'
+import { useState } from 'react'
+import { Image as ImageIcon, Upload, FileCode2, Settings2 } from 'lucide-react'
 import { useStore, DIAGRAM_TYPES } from '../state/store.js'
-import { ThemeMenu } from '../themes/ThemeMenu.jsx'
-import { LanguageToggle } from '../i18n/LanguageToggle.jsx'
 import { useT } from '../i18n/I18nProvider.jsx'
+import { SettingsModal } from './SettingsModal.jsx'
 
 export function TopBar({ onExportXml, onImportXml, onExportPng }) {
   const t = useT()
   const diagramType = useStore((s) => s.diagramType)
   const setDiagramType = useStore((s) => s.setDiagramType)
+  const [settingsOpen, setSettingsOpen] = useState(false)
 
   return (
     <header
@@ -23,8 +24,10 @@ export function TopBar({ onExportXml, onImportXml, onExportPng }) {
             {t('app.tag')}
           </span>
         </div>
-        <div className="flex items-center gap-0.5 rounded-md p-0.5 overflow-x-auto"
-             style={{ border: '1px solid var(--c-border)', background: 'var(--c-bg)' }}>
+        <div
+          className="flex items-center gap-0.5 rounded-md p-0.5 overflow-x-auto"
+          style={{ border: '1px solid var(--c-border)', background: 'var(--c-bg)' }}
+        >
           {DIAGRAM_TYPES.map((d) => (
             <button
               key={d.id}
@@ -56,9 +59,18 @@ export function TopBar({ onExportXml, onImportXml, onExportPng }) {
           <span className="font-mono text-[11px] uppercase tracking-wider">{t('topbar.png')}</span>
         </button>
         <div className="w-px h-6 mx-1" style={{ background: 'var(--c-border)' }} />
-        <LanguageToggle />
-        <ThemeMenu />
+        <button
+          className="dw-btn flex items-center gap-1.5"
+          onClick={() => setSettingsOpen(true)}
+          aria-label={t('topbar.settings')}
+          title={t('topbar.settings')}
+        >
+          <Settings2 size={14} />
+          <span className="font-mono text-[11px] uppercase tracking-wider">{t('topbar.settings')}</span>
+        </button>
       </div>
+
+      <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </header>
   )
 }
