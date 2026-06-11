@@ -7,11 +7,17 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build"
   },
   "dependencies": {
     "@levin-the-doctor/simple-tailwind-ui": "^1.6.0",
     "@tailwindcss/vite": "^4.3.0",
+    "@tauri-apps/api": "^2.11.0",
+    "@tauri-apps/plugin-dialog": "^2.7.1",
+    "@tauri-apps/plugin-fs": "^2.5.1",
     "@xyflow/react": "^12.11.0",
     "fast-xml-parser": "^5.8.0",
     "html-to-image": "^1.11.13",
