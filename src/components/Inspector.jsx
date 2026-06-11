@@ -117,6 +117,20 @@ function NodeEditor({ node, update, t }) {
           />
         </Field>
       )}
+      {type === 'erm-attribute' && (
+        <Field label={t('inspector.keyAttr')}>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={!!data.key}
+              onChange={(e) => update({ key: e.target.checked })}
+            />
+            <span className="text-[12px]" style={{ color: 'var(--c-fg-muted)' }}>
+              {t('inspector.keyAttr.hint')}
+            </span>
+          </label>
+        </Field>
+      )}
       {data.kind != null && type === 'epk-connector' && (
         <Field label={t('inspector.connectorKind')}>
           <select className="dw-input w-full" value={data.kind} onChange={(e) => update({ kind: e.target.value, name: e.target.value.toUpperCase() })}>

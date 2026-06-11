@@ -16,6 +16,7 @@ import { tStandalone as t } from '../i18n/I18nProvider.jsx'
 export const DIAGRAM_TYPES = [
   { id: 'class',    labelKey: 'diagram.class',    hintKey: 'diagram.class.hint' },
   { id: 'erm',      labelKey: 'diagram.erm',      hintKey: 'diagram.erm.hint' },
+  { id: 'rdm',      labelKey: 'diagram.rdm',      hintKey: 'diagram.rdm.hint' },
   { id: 'usecase',  labelKey: 'diagram.usecase',  hintKey: 'diagram.usecase.hint' },
   { id: 'sequence', labelKey: 'diagram.sequence', hintKey: 'diagram.sequence.hint' },
   { id: 'swimlane', labelKey: 'diagram.swimlane', hintKey: 'diagram.swimlane.hint' },
@@ -150,7 +151,14 @@ function defaultNodeData(kind) {
     case 'class':
       return { name: t('default.class'), stereotype: '', attributes: ['- attr: Type'], methods: ['+ method(): void'] }
     case 'entity':
-      return { name: t('default.entity'), attributes: [{ name: 'id', type: 'INT', pk: true }] }
+      // RDM table
+      return { name: t('default.rdm'), attributes: [{ name: 'id', type: 'INT', pk: true }] }
+    case 'erm-entity':
+      return { name: t('default.entity') }
+    case 'erm-relationship':
+      return { name: t('default.relationship') }
+    case 'erm-attribute':
+      return { name: t('default.attribute'), key: false }
     case 'actor':
       return { name: t('default.actor') }
     case 'usecase':
@@ -175,7 +183,9 @@ function defaultNodeData(kind) {
 function defaultEdgeData(diagramType) {
   switch (diagramType) {
     case 'class':    return { kind: 'association', label: '' }
-    case 'erm':      return { kind: 'relation',    label: '', sourceCard: '1', targetCard: 'N' }
+    // Chen ERM: plain undirected line, cardinality labels sit near each end.
+    case 'erm':      return { kind: 'plain',       label: '', sourceCard: '', targetCard: '' }
+    case 'rdm':      return { kind: 'relation',    label: '', sourceCard: '1', targetCard: 'N' }
     case 'usecase':  return { kind: 'association', label: '' }
     case 'sequence': return { kind: 'message',     label: 'msg()' }
     case 'swimlane': return { kind: 'flow',        label: '' }

@@ -126,30 +126,42 @@ export function UmlEdge(props) {
       />
       {(data.label || data.sourceCard || data.targetCard) && (
         <EdgeLabelRenderer>
-          <div
-            className="nodrag nopan"
-            style={{
-              position: 'absolute',
-              transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`,
-              pointerEvents: 'all',
-            }}
-          >
-            <div
-              className="font-mono text-[10px] px-1.5 py-0.5 rounded"
-              style={{
-                background: 'var(--c-bg-elev)',
-                color: 'var(--c-fg)',
-                border: '1px solid var(--c-border)',
-              }}
-            >
-              {data.sourceCard && <span style={{ color: 'var(--c-fg-muted)' }}>{data.sourceCard}&nbsp;·&nbsp;</span>}
-              {data.label}
-              {data.targetCard && <span style={{ color: 'var(--c-fg-muted)' }}>&nbsp;·&nbsp;{data.targetCard}</span>}
-            </div>
-          </div>
+          {data.label && (
+            <ChipAt x={labelX} y={labelY}>{data.label}</ChipAt>
+          )}
+          {data.sourceCard && (
+            <ChipAt x={lerp(sourceX, targetX, 0.18)} y={lerp(sourceY, targetY, 0.18)} muted>
+              {data.sourceCard}
+            </ChipAt>
+          )}
+          {data.targetCard && (
+            <ChipAt x={lerp(sourceX, targetX, 0.82)} y={lerp(sourceY, targetY, 0.82)} muted>
+              {data.targetCard}
+            </ChipAt>
+          )}
         </EdgeLabelRenderer>
       )}
     </g>
+  )
+}
+
+function lerp(a, b, k) { return a + (b - a) * k }
+
+function ChipAt({ x, y, muted, children }) {
+  return (
+    <div
+      className="nodrag nopan font-mono text-[10px] px-1.5 py-0.5 rounded absolute"
+      style={{
+        transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`,
+        background: 'var(--c-bg-elev)',
+        color: muted ? 'var(--c-fg-muted)' : 'var(--c-fg)',
+        border: '1px solid var(--c-border)',
+        pointerEvents: 'all',
+        whiteSpace: 'nowrap',
+      }}
+    >
+      {children}
+    </div>
   )
 }
 
