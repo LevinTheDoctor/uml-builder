@@ -1,6 +1,10 @@
 import { Handle, Position } from '@xyflow/react'
 import { ClassNode } from './ClassNode.jsx'
 import { EntityNode } from './EntityNode.jsx'
+import {
+  ActorNode, UseCaseNode, LifelineNode, SwimlaneNode,
+  EpkEventNode, EpkFunctionNode, EpkConnectorNode,
+} from './ExtraNodes.jsx'
 
 /**
  * Stub node renderers — proper visuals per diagram type live in their own
@@ -72,12 +76,12 @@ export function NoteNode({ data, selected }) {
 export const nodeTypes = {
   class:           ClassNode,
   entity:          EntityNode,
-  actor:           PlaceholderNode,
-  usecase:         PlaceholderNode,
-  lifeline:        PlaceholderNode,
-  swimlane:        PlaceholderNode,
-  'epk-event':     PlaceholderNode,
-  'epk-function':  PlaceholderNode,
-  'epk-connector': PlaceholderNode,
+  actor:           ActorNode,
+  usecase:         UseCaseNode,
+  lifeline:        LifelineNode,
+  swimlane:        SwimlaneNode,
+  'epk-event':     EpkEventNode,
+  'epk-function':  EpkFunctionNode,
+  'epk-connector': EpkConnectorNode,
   note:            NoteNode,
 }
