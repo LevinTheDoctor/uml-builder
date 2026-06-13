@@ -1,5 +1,5 @@
 import { useCallback, useRef } from 'react'
-import { ReactFlow, Background, Controls, MiniMap, useReactFlow, ReactFlowProvider, BackgroundVariant } from '@xyflow/react'
+import { ReactFlow, Background, Controls, MiniMap, useReactFlow, ReactFlowProvider, BackgroundVariant, ConnectionMode } from '@xyflow/react'
 import { useStore } from '../state/store.js'
 import { nodeTypes } from '../nodes/nodeTypes.jsx'
 import { edgeTypes } from '../edges/UmlEdge.jsx'
@@ -59,6 +59,7 @@ function CanvasInner() {
         fitView
         proOptions={{ hideAttribution: true }}
         defaultEdgeOptions={{ type: 'uml' }}
+        connectionMode={ConnectionMode.Loose}
       >
         <Background variant={BackgroundVariant.Dots} gap={20} size={1.2} color="var(--c-grid)" />
         <Controls position="bottom-right" showInteractive={false} />

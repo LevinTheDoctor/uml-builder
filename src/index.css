@@ -1,5 +1,10 @@
 @import "tailwindcss";
 @import "@xyflow/react/dist/style.css";
+@source "../node_modules/@levin-the-doctor/simple-tailwind-ui/lib";
+
+/* simple-tailwind-ui ships `dark:` classes — bind them to the `.dark` class
+   that themes.js toggles on <html>, instead of prefers-color-scheme. */
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* ---------------------------------------------------------------------------
    Diagrammwerk — design tokens
